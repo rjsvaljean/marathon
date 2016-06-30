@@ -89,7 +89,7 @@ class HealthCheckWorkerActor extends Actor with ActorLogging {
     def get(url: String): Future[HttpResponse] = {
       implicit val requestTimeout = Timeout(check.timeout)
       val pipeline: HttpRequest => Future[HttpResponse] = sendReceive
-      pipeline(Get(url))
+      pipeline(Get(url).withHeaders(HttpHeaders.Host(host, port)))
     }
 
     get(url).map { response =>
